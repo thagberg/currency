@@ -1,0 +1,13 @@
+<ul class="nav
+<% _.each(extraClasses, function (klass) { %>
+  <%= klass %>
+<% }); %>
+">
+	<% _.each(navItems, function (item) { %>
+	<li class="<% if (item.selected) { %>active<% } %>">
+		<a href="#<%= baseURL %>/<%= item.id %>">
+			<%= item.title %>
+		</a>
+	</li>
+	<% }); %>
+</ul>
