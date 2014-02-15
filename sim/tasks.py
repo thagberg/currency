@@ -11,7 +11,7 @@ def update():
     currencies = Currency.objects.all()
     pairs = list()
     trades = list()
-
+    
     # get the interested currencies and their trade values
     for currency in currencies:
         pair = '{crypto}_{real}'.format(crypto=currency.currency_code.lower(),
