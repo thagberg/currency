@@ -18,25 +18,20 @@ def merge( a, b ):
 json_serializer = serializers.get_serializer('json')()
 
 def record_to_json(rec):
-    values = json.loads(json_serializer.serialize(rec))
+    values = rec.fields() #json.loads(json_serializer.serialize(rec))
     values['id'] = rec.pk
     return values
 
-def json_response(stuff):
-    data = map(lambda r: record_to_json(r), stuff)
-    return HttpResponse(json.dumps(data), content_type='application/json')
+def json_response(query_set):
+    return HttpResponse(json_serializer.serialize(query_set), content_type='application/json')
 
 def index(request):
     return HttpResponse("hello")
 
 def get_exchange_rates_for_exchanger(request, exchanger_name='Coinbase'):
-    json_serializer = serializers.get_serializer('json')
-    json_serializer = json_serializer()
     exchanger = Exchanger.objects.get(name=exchanger_name)
     rates = ExchangeRate.objects.filter(exchanger=exchanger)
-    json_rates = json_serializer.serialize(rates)
-    #json_rates = serializers.serialize('json', rates, fields=('id'))
-    return HttpResponse(json_rates, content_type='json')
+    return json_response(rates)
 
 def transfers(request):
     return json_response(Transfer.objects.all())
