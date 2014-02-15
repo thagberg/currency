@@ -36,20 +36,20 @@ def users(request, user_id):
     return json_response(User.objects.filter(id=user_id))
 
 def post_user_trade_trigger(request):
-    params = request.POST
+    params = request.GET
     user = User.objects.get(id=params['user'])
     max_price = params['max_price']
-    sell_currency = Currency.objects.get(params['sell_currency'])
-    buy_currency = Currency.objects.get(params['buy_currency'])
+    sell_currency = Currency.objects.get(currency_code=params['sell_currency'])
+    buy_currency = Currency.objects.get(currency_code=params['buy_currency'])
     created = UserTradeTrigger(user=user, max_price=max_price, sell_currency=sell_currency, buy_currency=buy_currency)
     created.save()
-    return json_response(UserTradeTrigger.objects.get(id=created.id))
+    return json_response(UserTradeTrigger.objects.filter(id=created.id))
 
 def get_user_trade_triggers(request):
     return json_response(UserTradeTrigger.objects.all())
-    
+
 def user_trade_triggers(request):
-    if request.method == 'POST':
+    if request.GET.get('method','GET') == 'POST':
         return post_user_trade_trigger(request)
     else:
         return get_user_trade_triggers(request)
