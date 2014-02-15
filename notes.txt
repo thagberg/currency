@@ -14,3 +14,19 @@ With your django dev server running, go to:
     http://localhost:8000/admin
     Username is 'admin'
     Password is 'password'
+
+	
+Data model
+===============================
+I think what we'll need is:
+
+A table of exchangers
+- exchanger code (bitstamp)
+- name (Bitstamp)
+
+A table of excange rates
+- exchanger code (bitstamp)
+- timestamp
+- input currency code (USD)
+- output currency code (BTC)
+- exchange rate (output/input, e.g. 600)
