@@ -35,6 +35,25 @@ def get_exchange_rates_for_exchanger(request, exchanger_name='Coinbase'):
 def users(request, user_id):
     return json_response(User.objects.filter(id=user_id))
 
+def post_user_trade_trigger(request):
+    params = request.POST
+    user = User.objects.get(id=params['user'])
+    max_price = params['max_price']
+    sell_currency = Currency.objects.get(params['sell_currency'])
+    buy_currency = Currency.objects.get(params['buy_currency'])
+    created = UserTradeTrigger(user=user, max_price=max_price, sell_currency=sell_currency, buy_currency=buy_currency)
+    created.save()
+    return json_response(UserTradeTrigger.objects.get(id=created.id))
+
+def get_user_trade_triggers(request):
+    return json_response(UserTradeTrigger.objects.all())
+    
+def user_trade_triggers(request):
+    if request.method == 'POST':
+        return post_user_trade_trigger(request)
+    else:
+        return get_user_trade_triggers(request)
+
 def transfers(request):
     return json_response(Transfer.objects.all())
 
