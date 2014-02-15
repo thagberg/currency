@@ -4,6 +4,7 @@ from sim import views
 
 urlpatterns = patterns('',
     url(r'^transfers$', views.transfers, name='transfers'),
+    url(r'^users/(?P<user_id>.+)$', views.users),
     url(r'^rates/(?P<exchanger_name>.+)$', views.get_exchange_rates_for_exchanger),
     url(r'^rates/$', views.get_exchange_rates_for_exchanger),
     url(r'^$', views.index)

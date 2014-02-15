@@ -1,10 +1,9 @@
-import json
-
 from django.shortcuts import render
-import json
-
 from django.http import HttpResponse
 from django.core import serializers
+from django.contrib.auth.models import User
+
+import json
 
 from .models import *
 
@@ -33,6 +32,9 @@ def get_exchange_rates_for_exchanger(request, exchanger_name='Coinbase'):
     rates = ExchangeRate.objects.filter(exchanger=exchanger)
     return json_response(rates)
 
+def users(request, user_id):
+    return json_response(User.objects.filter(id=user_id))
+
 def transfers(request):
     return json_response(Transfer.objects.all())
 
@@ -46,7 +48,5 @@ def trade(request):
     params['buy_amount']
     params['time']
     
-    
-
 def post_trade(request):
     return HttpResponse(json.dumps({'hi': 'wat ap'}), content_type="application/json")
