@@ -26,7 +26,7 @@ def record_to_json(rec):
     return values
 
 def json_response(query_set):
-    return HttpResponse(json_serializer.serialize(query_set), content_type='application/json')
+    return HttpResponse(json_serializer.serialize(query_set), mimetype='application/json')
 
 def index(request):
     return HttpResponse("hello")
@@ -84,7 +84,3 @@ def trade(request):
                             amount=sold_amount)
     buy_transfer.save()
     return HttpResponse('Success!')
-    
-
-def post_trade(request):
-    return HttpResponse(json.dumps({'hi': 'wat ap'}), content_type="application/json")
