@@ -15,6 +15,7 @@ With your django dev server running, go to:
     Username is 'admin'
     Password is 'password'
 
+<<<<<<< HEAD
 Add new data models to sqlite database
 ======================================
 
@@ -33,3 +34,20 @@ Dependencies
 django
 celery
 django-celery
+=======
+	
+Data model
+===============================
+I think what we'll need is:
+
+A table of exchangers
+- exchanger code (bitstamp)
+- name (Bitstamp)
+
+A table of excange rates
+- exchanger code (bitstamp)
+- timestamp
+- input currency code (USD)
+- output currency code (BTC)
+- exchange rate (output/input, e.g. 600)
+>>>>>>> 882c736a961854790ac8a69f6f7db669593d8544
