@@ -8,6 +8,7 @@ from django.http import HttpResponse
 from django.core import serializers
 from django.contrib.auth.models import User
 
+from django.db.models import Q
 
 from .models import *
 
@@ -69,8 +70,8 @@ def trade(request):
     buy_currency = Currency.objects.filter(currency_code=params['buy_currency'].upper())[0]
     sold_amount = params['sell_amount']
     buy_amount = params['buy_amount']
-    time = datetime.now()
-    #time = datetime.strptime(params['time'], '%b %d %Y %I:%M%p')
+    # time = datetime.now()
+    time = datetime.strptime(params['time'], '%Y-%m-%dT%H:%M:%S')
     sell_transfer = Transfer(time=time,
                              source_exchanger=seller,
                              destination_exchanger=buyer,
@@ -83,4 +84,4 @@ def trade(request):
                             currency=buy_currency,
                             amount=sold_amount)
     buy_transfer.save()
-    return HttpResponse('Success!')
+    return json_response(Transfer.objects.filter(Q(id=sell_transfer.id) | Q(id=buy_transfer.id)))
