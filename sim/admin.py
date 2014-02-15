@@ -1,3 +1,7 @@
 from django.contrib import admin
+from sim.models import *
 
-# Register your models here.
+admin.site.register(Exchanger)
+admin.site.register(Currency)
+admin.site.register(ExchangeRate)
+admin.site.register(Transaction)
