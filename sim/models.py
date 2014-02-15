@@ -29,7 +29,7 @@ class ExchangeRate(models.Model):
     def __unicode__(self):
         return "%f %s/%s via %s on %s" % (self.exchange_rate, self.input_currency.currency_code, self.output_currency.currency_code, self.exchanger.name, self.time)
 
-class Transaction(models.Model):
+class Transfer(models.Model):
     time = models.DateTimeField()
     source_exchanger = models.ForeignKey(Exchanger, related_name="+")
     destination_exchanger = models.ForeignKey(Exchanger, related_name="+")
