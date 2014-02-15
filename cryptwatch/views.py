@@ -1,4 +1,10 @@
 from django.http import HttpResponse
 
+def readfile(filename):
+    fh = open(filename, 'rb')
+    r = fh.read()
+    fh.close()
+    return r
+
 def index(request):
-	return HttpResponse("Hello!")
+	return HttpResponse(readfile("pages/index.html"))
