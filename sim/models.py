@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 # Represents some agent in the system
 # Coinbase is an exchanger
@@ -38,3 +39,27 @@ class Transfer(models.Model):
     
     def __unicode__(self):
         return "%f %s from %s to %s on %s" % (self.amount, self.currency.currency_code, self.source_exchanger, self.destination_exchanger, self.time)
+
+class UserTradeTrigger(models.Model):
+    user = models.ForeignKey(User)
+    sell_currency = models.ForeignKey(Currency, db_column="sell_currency_code", related_name="+")
+    buy_currency = models.ForeignKey(Currency, db_column="buy_currency_code", related_name="+")
+    max_price = models.DecimalField(max_digits=19,decimal_places=10) # max price of currency bought in currency sold
+    
+    def __unicode__(self):
+        return "User %d would like to buy %s for %f %s" % (self.user.id, self.buy_currency.currency_code, self.max_price, self.sell_currency.currency_code)
+
+class UserExchanger(models.Model):
+    user = models.ForeignKey(User)
+    exchanger = models.ForeignKey(Exchanger)
+    
+    def __unicode__(self):
+        return "User %d controls %s" % (self.user.id, self.exchanger.name)
+
+
+class UserPreferredTradingPartner(models.Model):
+    user = models.ForeignKey(User)
+    partner = models.ForeignKey(Exchanger)
+
+    def __unicode__(self):
+        return "User %d can trade with %s" % (self.user.id, self.partner.name)
