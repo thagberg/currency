@@ -15,6 +15,7 @@ def get_exchange_rates_for_exchanger(request, exchanger_name='Coinbase'):
     exchanger = Exchanger.objects.get(name=exchanger_name)
     rates = ExchangeRate.objects.filter(exchanger=exchanger)
     json_rates = json_serializer.serialize(rates)
+    #json_rates = serializers.serialize('json', rates, fields=('id'))
     return HttpResponse(json_rates, content_type='json')
 
 def get_transfers(request):
