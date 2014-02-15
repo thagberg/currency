@@ -1,6 +1,14 @@
 from django.db import models
 
-class TradingPair(models.Model):
-    crypt_currency = models.CharField(max_length=5)
-    world_currency = models.CharField(max_length=5)
-    current_value = models.DecimalField(max_digits=20, decimal_places=10)
+class Exchanger(models.Model):
+    name = models.CharField(max_length=31)
+
+class Currency(models.Model):
+    currency_code = models.CharField(max_length=15,primary_key=True)
+    name = models.CharField(max_length=31)
+
+class ExchangeRate(models.Model):
+    exchanger = models.ForeignKey(Exchanger)
+    input_currency = models.ForeignKey(Currency, related_name="+")
+    output_currency = models.ForeignKey(Currency, related_name="+")
+    exchange_rate = models.DecimalField(max_digits=19,decimal_places=10)
