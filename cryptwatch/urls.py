@@ -1,6 +1,9 @@
 from django.conf.urls import patterns, include, url
-
+from django.views.generic import TemplateView
 from django.contrib import admin
+
+from cryptwatch import views
+
 admin.autodiscover()
 
 urlpatterns = patterns('',
@@ -9,5 +12,6 @@ urlpatterns = patterns('',
     # url(r'^blog/', include('blog.urls')),
 
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^sim/', include('sim.urls'))
+    url(r'^sim/', include('sim.urls')),
+    url(r'^$', views.index, name='home page')
 )
