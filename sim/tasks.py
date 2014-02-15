@@ -29,17 +29,9 @@ def update():
         output_curr = trade_id.split('/')[1]
         input_curr = Currency.objects.get(currency_code=input_curr.upper())
         output_curr = Currency.objects.get(currency_code=output_curr.upper())
-        exchanges = ExchangeRate.objects.filter(input_currency=input_curr,
-                                                output_currency=output_curr)
-        if len(exchanges) == 0:
-            exchange = ExchangeRate(exchanger=exchanger,
-                                    input_currency=input_curr,
-                                    output_currency=output_curr,
-                                    exchange_rate=trade['price'],
-                                    time=time)
-            exchange.save()
-        else:
-            exchange = exchanges[0]
-            exchange.exchange_rate = trade['price']
-            exchange.time = time
-            exchange.save()
+        exchange = ExchangeRate(exchanger=exchanger,
+                                input_currency=input_curr,
+                                output_currency=output_curr,
+                                time=time,
+                                exchange_rate=trade['price'])
+        exchange.save()
