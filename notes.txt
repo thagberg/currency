@@ -15,7 +15,6 @@ With your django dev server running, go to:
     Username is 'admin'
     Password is 'password'
 
-<<<<<<< HEAD
 Add new data models to sqlite database
 ======================================
 
@@ -34,7 +33,6 @@ Dependencies
 django
 celery
 django-celery
-=======
 	
 Data model
 ===============================
@@ -50,4 +48,3 @@ A table of excange rates
 - input currency code (USD)
 - output currency code (BTC)
 - exchange rate (output/input, e.g. 600)
->>>>>>> 882c736a961854790ac8a69f6f7db669593d8544
