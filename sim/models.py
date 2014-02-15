@@ -16,13 +16,13 @@ class Currency(models.Model):
 class ExchangeRate(models.Model):
     exchanger = models.ForeignKey(Exchanger)
     time = models.DateTimeField()
-    input_currency = models.ForeignKey(Currency, related_name="+")
-    output_currency = models.ForeignKey(Currency, related_name="+")
+    input_currency = models.ForeignKey(Currency, db_column="currency_code", related_name="+")
+    output_currency = models.ForeignKey(Currency, db_column="currency_code", related_name="+")
     exchange_rate = models.DecimalField(max_digits=19,decimal_places=10)
 
 class Transaction(models.Model):
     time = models.DateTimeField()
     source_exchanger = models.ForeignKey(Exchanger, related_name="+")
     destination_exchanger = models.ForeignKey(Exchanger, related_name="+")
-    currency = models.ForeignKey(Currency, related_name="+")
+    currency = models.ForeignKey(Currency, db_column="currency_code", related_name="+")
     amount = models.DecimalField(max_digits=19,decimal_places=10)
