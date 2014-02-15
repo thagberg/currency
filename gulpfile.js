@@ -14,7 +14,7 @@ var minifyHTML = require('gulp-minify-html');
 var concat     = require('gulp-concat');
 
 var dir = {
-    dev:  'design_dev/',
+    dev:  'www/',
     prod: 'design_publish/',
     src:  'design/'
 };
