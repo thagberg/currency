@@ -3,8 +3,11 @@ from datetime import datetime
 
 from django.shortcuts import render
 
+from django.shortcuts import render
 from django.http import HttpResponse
 from django.core import serializers
+from django.contrib.auth.models import User
+
 
 from .models import *
 
@@ -18,25 +21,42 @@ def merge( a, b ):
 json_serializer = serializers.get_serializer('json')()
 
 def record_to_json(rec):
-    values = json.loads(json_serializer.serialize(rec))
+    values = rec.fields() #json.loads(json_serializer.serialize(rec))
     values['id'] = rec.pk
     return values
 
-def json_response(stuff):
-    data = map(lambda r: record_to_json(r), stuff)
-    return HttpResponse(json.dumps(data), content_type='application/json')
+def json_response(query_set):
+    return HttpResponse(json_serializer.serialize(query_set), content_type='application/json')
 
 def index(request):
     return HttpResponse("hello")
 
 def get_exchange_rates_for_exchanger(request, exchanger_name='Coinbase'):
-    json_serializer = serializers.get_serializer('json')
-    json_serializer = json_serializer()
     exchanger = Exchanger.objects.get(name=exchanger_name)
     rates = ExchangeRate.objects.filter(exchanger=exchanger)
-    json_rates = json_serializer.serialize(rates)
-    json_rates = serializers.serialize('json', rates)
-    return HttpResponse(json_rates, content_type='json')
+    return json_response(rates)
+
+def users(request, user_id):
+    return json_response(User.objects.filter(id=user_id))
+
+def post_user_trade_trigger(request):
+    params = request.GET
+    user = User.objects.get(id=params['user'])
+    max_price = params['max_price']
+    sell_currency = Currency.objects.get(currency_code=params['sell_currency'])
+    buy_currency = Currency.objects.get(currency_code=params['buy_currency'])
+    created = UserTradeTrigger(user=user, max_price=max_price, sell_currency=sell_currency, buy_currency=buy_currency)
+    created.save()
+    return json_response(UserTradeTrigger.objects.filter(id=created.id))
+
+def get_user_trade_triggers(request):
+    return json_response(UserTradeTrigger.objects.all())
+
+def user_trade_triggers(request):
+    if request.GET.get('method','GET') == 'POST':
+        return post_user_trade_trigger(request)
+    else:
+        return get_user_trade_triggers(request)
 
 def transfers(request):
     return json_response(Transfer.objects.all())
