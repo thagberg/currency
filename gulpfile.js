@@ -68,6 +68,7 @@ gulp.task('resources', function() {
 
     gulp.src([
             dir.src + 'assets/**/*',
+            'bower_components/bootstrap/fonts/**/*',
             'bower_components/html5shiv/dist/html5shiv.js'
         ])
         .pipe(gulp.dest(destination));
