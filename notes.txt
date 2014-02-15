@@ -14,3 +14,15 @@ With your django dev server running, go to:
     http://localhost:8000/admin
     Username is 'admin'
     Password is 'password'
+
+Add new data models to sqlite database
+======================================
+
+Run 'python manage.py syncdb'
+
+
+Useful django links
+===================
+
+https://docs.djangoproject.com/en/1.6/intro/
+https://docs.djangoproject.com/en/dev/ref/models/fields/#field-types
