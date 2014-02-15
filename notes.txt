@@ -1,0 +1,16 @@
+Starting a django surver
+========================
+
+From the directory containing the manage.py file:
+    run "python manage.py runserver"
+    You can add an address after runserver if you want something that's
+    externally accessible
+    Otherwise, this will be available at localhost:8000
+
+Access the django admin console
+===============================
+
+With your django dev server running, go to:
+    http://localhost:8000/admin
+    Username is 'admin'
+    Password is 'password'
