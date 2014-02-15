@@ -11,3 +11,6 @@ def index(request):
 
 def app(request):
 	return HttpResponse(readfile("www/app.html"))
+
+def serve_file(request, filename):
+    return HttpResponse(readfile("www/"+filename))
