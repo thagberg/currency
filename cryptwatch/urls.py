@@ -13,5 +13,6 @@ urlpatterns = patterns('',
 
     url(r'^admin/', include(admin.site.urls)),
     url(r'^sim/', include('sim.urls')),
-    url(r'^$', views.index, name='home page')
+    url(r'^$', views.index, name='home page'),
+    url(r'^app$', views.index, name='ze app')
 )

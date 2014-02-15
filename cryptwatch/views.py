@@ -7,4 +7,7 @@ def readfile(filename):
     return r
 
 def index(request):
-	return HttpResponse(readfile("pages/index.html"))
+	return HttpResponse(readfile("www/index.html"))
+
+def app(request):
+	return HttpResponse(readfile("www/app.html"))
