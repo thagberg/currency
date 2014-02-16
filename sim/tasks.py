@@ -1,5 +1,6 @@
 from __future__ import absolute_import
 from datetime import datetime
+import random
 
 from celery import Celery
 from .models import *
@@ -35,3 +36,22 @@ def update():
                                 time=time,
                                 exchange_rate=trade['price'])
         exchange.save()
+
+def fuckit():
+    for i in range(20):
+        exchanger = Exchanger(name='Source{i}'.format(i=i))
+        exchanger.save()
+
+    exchangers = Exchanger.objects.all()
+    for exchanger in exchangers:
+        currencies = Currency.objects.all()
+        usd = Currency.objects.get(currency_code='USD')
+        for currency in currencies:
+            time = datetime.now()
+            rate = random.uniform(0.000001, 700.00000)
+            exchange = ExchangeRate(exchanger=exchanger,
+                                    input_currency=currency,
+                                    output_currency=usd,
+                                    time=time,
+                                    exchange_rate=rate)
+            exchange.save()
