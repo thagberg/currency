@@ -37,6 +37,9 @@ def get_exchange_rates_for_exchanger(request, exchanger_name='Coinbase'):
     rates = ExchangeRate.objects.filter(exchanger=exchanger)
     return json_response(rates)
 
+def rates(request):
+    return json_response(ExchangeRate.objects.all())
+
 def users(request, user_id):
     return json_response(User.objects.filter(id=user_id))
 
