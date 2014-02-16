@@ -5,6 +5,7 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 var AppView = require('./views/app');
 var Workspace = require('./routers/router');
+var UserCollection = require('./collections/users');
 
 Backbone.$ = $;
 
@@ -30,6 +31,11 @@ window.appView = new AppView({
 });
 window.appView.render();
 
-// Initialize routing and start Backbone.history()
-new Workspace();
-Backbone.history.start();
+var collection = new UserCollection();
+collection.fetch().then(function () {
+    window.userModel = collection.at(0);
+
+	// Initialize routing and start Backbone.history()
+	window.router = new Workspace();
+	Backbone.history.start();
+});

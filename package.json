@@ -8,7 +8,8 @@
     "jquery": "~2.1",
     "backbone": "~1.0.0",
     "underscore": "~1.5.1",
-    "backbone.layoutmanager": "~0.9.5"
+    "backbone.layoutmanager": "~0.9.5",
+    "moment": "~2.5.1"
   },
   "devDependencies": {
     "gulp": "~3.5.0",
