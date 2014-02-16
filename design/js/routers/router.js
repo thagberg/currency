@@ -5,6 +5,7 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 var DashboardView = require('../views/dashboard');
 var SettingView = require('../views/settings');
+var RatesView = require('../views/rates');
 
 Backbone.$ = $;
 
@@ -12,7 +13,8 @@ module.exports = Backbone.Router.extend({
 
     routes: {
         'dashboard' : 'showDashboard',
-        'settings'  : 'showSettings'
+        'settings'  : 'showSettings',
+        'rates'     : 'showRates',
     },
 
     showDashboard: function () {
@@ -24,6 +26,13 @@ module.exports = Backbone.Router.extend({
 
     showSettings: function () {
         var view = new SettingView({
+
+        });
+        window.appView.showView('#main-content', view);
+    },
+
+    showRates: function () {
+        var view = new RatesView({
 
         });
         window.appView.showView('#main-content', view);
