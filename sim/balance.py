@@ -1,5 +1,7 @@
-from sim.models import Transfer
+import random
+from sim.models import *
 from django.db.models import Q
+from datetime import datetime, timedelta
 
 class ExchangerBalance:
     def __init__(self, exchanger):
@@ -19,3 +21,15 @@ class ExchangerBalance:
             cc = transfer.currency.currency_code
             balances[cc] = delta + balances.get(cc, 0)
         return balances
+    
+    def generate_exchange_rates(self, begin_date, end_date, begin_price):
+        usd = Currency.objects.get(currency_code='USD')
+        btc = Currency.objects.get(currency_code='BTC')
+        
+        date = begin_date
+        price = begin_price
+        while date < end_date:
+            price = price + random.random() * 5
+            ExchangeRate(exchanger=self.exchanger, time=date, input_currency=btc, output_currency=usd, exchange_rate=price).save()
+            ExchangeRate(exchanger=self.exchanger, time=date, input_currency=usd, output_currency=btc, exchange_rate=1/price).save()
+            date = date + timedelta(days=1)
