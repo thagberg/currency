@@ -85,3 +85,8 @@ def trade(request):
                             amount=sold_amount)
     buy_transfer.save()
     return json_response(Transfer.objects.filter(Q(id=sell_transfer.id) | Q(id=buy_transfer.id)))
+
+
+def exchanger(request, exchanger_id):
+    exr = Exchanger.objects.get(id=exchanger_id)
+    return HttpResponse(exr.name)
