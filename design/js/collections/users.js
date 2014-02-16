@@ -10,7 +10,8 @@ Backbone.$ = $;
 var UserCollection = Backbone.Collection.extend({
 
     // Reference to this collection's model.
-    model: User
+    model: User,
+    url: '/sim/users/1'
 });
 
 module.exports = UserCollection;
