@@ -19,7 +19,7 @@ module.exports = Backbone.View.extend({
     currentViews: {},
     navItems: [
         {
-            id: 'overview',
+            id: 'dashboard',
             title: 'Overview'
         },
         {
@@ -65,7 +65,7 @@ module.exports = Backbone.View.extend({
                 _ : _,
                 transfers: _this.collection.for_template()
             }));
-
+/*
             _this.$('#chart').highcharts({
                 chart: {
                     type: 'area'
@@ -125,6 +125,7 @@ module.exports = Backbone.View.extend({
                     data: [2, 2, 2, 6, 13, 30, 46]
                 }]
             });
+*/
         });
     }
 });

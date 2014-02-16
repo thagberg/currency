@@ -95,7 +95,26 @@ var NavigationItems = Backbone.Collection.extend({
 
 module.exports = NavigationItems;
 
-},{"backbone":13,"jquery":14,"underscore":16}],2:[function(require,module,exports){
+},{"backbone":16,"jquery":17,"underscore":19}],2:[function(require,module,exports){
+"use strict";
+
+var $ = require('jquery');
+var _ = require('underscore');
+var Backbone = require('backbone');
+var Rate = require('../models/rate');
+
+Backbone.$ = $;
+
+var RateCollection = Backbone.Collection.extend({
+
+    // Reference to this collection's model.
+    model: Rate,
+    url: '/sim/rates',
+});
+
+module.exports = RateCollection;
+
+},{"../models/rate":6,"backbone":16,"jquery":17,"underscore":19}],3:[function(require,module,exports){
 "use strict";
 
 var $ = require('jquery');
@@ -123,7 +142,7 @@ var TransferCollection = Backbone.Collection.extend({
 
 module.exports = TransferCollection;
 
-},{"../models/transfer":5,"backbone":13,"jquery":14,"underscore":16}],3:[function(require,module,exports){
+},{"../models/transfer":7,"backbone":16,"jquery":17,"underscore":19}],4:[function(require,module,exports){
 "use strict";
 
 var $ = require('jquery');
@@ -142,7 +161,7 @@ var UserCollection = Backbone.Collection.extend({
 
 module.exports = UserCollection;
 
-},{"../models/user":6,"backbone":13,"jquery":14,"underscore":16}],4:[function(require,module,exports){
+},{"../models/user":8,"backbone":16,"jquery":17,"underscore":19}],5:[function(require,module,exports){
 "use strict";
 
 var $ = require('jquery');
@@ -185,7 +204,31 @@ collection.fetch().then(function () {
 	Backbone.history.start();
 });
 
-},{"./collections/users":3,"./routers/router":7,"./views/app":9,"backbone":13,"jquery":14,"underscore":16}],5:[function(require,module,exports){
+},{"./collections/users":4,"./routers/router":9,"./views/app":11,"backbone":16,"jquery":17,"underscore":19}],6:[function(require,module,exports){
+"use strict";
+
+var $ = require('jquery');
+var _ = require('underscore');
+var Backbone = require('backbone');
+var moment = require('moment');
+
+Backbone.$ = $;
+
+module.exports = Backbone.Model.extend({
+    // Default attributes for the todo
+    // and ensure that each todo created has `title` and `completed` keys.
+
+    urlRoot: '/sim/rates',
+
+    for_template: function () {
+        var timeFormatted = moment(this.get('time')).format("dddd, MMMM Do YYYY, h:mm:ss a");
+        return _.extend(this.toJSON(), {
+            timeFormatted: timeFormatted
+        });
+    }
+});
+
+},{"backbone":16,"jquery":17,"moment":18,"underscore":19}],7:[function(require,module,exports){
 "use strict";
 
 var $ = require('jquery');
@@ -209,7 +252,7 @@ module.exports = Backbone.Model.extend({
     }
 });
 
-},{"backbone":13,"jquery":14,"moment":15,"underscore":16}],6:[function(require,module,exports){
+},{"backbone":16,"jquery":17,"moment":18,"underscore":19}],8:[function(require,module,exports){
 "use strict";
 
 var $ = require('jquery');
@@ -225,7 +268,7 @@ module.exports = Backbone.Model.extend({
     urlRoot: "/sim/users"
 });
 
-},{"backbone":13,"jquery":14,"underscore":16}],7:[function(require,module,exports){
+},{"backbone":16,"jquery":17,"underscore":19}],9:[function(require,module,exports){
 "use strict";
 
 var $ = require('jquery');
@@ -233,6 +276,7 @@ var _ = require('underscore');
 var Backbone = require('backbone');
 var DashboardView = require('../views/dashboard');
 var SettingView = require('../views/settings');
+var RatesView = require('../views/rates');
 
 Backbone.$ = $;
 
@@ -240,7 +284,8 @@ module.exports = Backbone.Router.extend({
 
     routes: {
         'dashboard' : 'showDashboard',
-        'settings'  : 'showSettings'
+        'settings'  : 'showSettings',
+        'rates'     : 'showRates',
     },
 
     showDashboard: function () {
@@ -255,10 +300,17 @@ module.exports = Backbone.Router.extend({
 
         });
         window.appView.showView('#main-content', view);
+    },
+
+    showRates: function () {
+        var view = new RatesView({
+
+        });
+        window.appView.showView('#main-content', view);
     }
 });
 
-},{"../views/dashboard":11,"../views/settings":12,"backbone":13,"jquery":14,"underscore":16}],8:[function(require,module,exports){
+},{"../views/dashboard":13,"../views/rates":14,"../views/settings":15,"backbone":16,"jquery":17,"underscore":19}],10:[function(require,module,exports){
 var JST = {};JST["coins"] = function anonymous(it) {
 var out='<h1 class="page-header">Coin Addresses</h1><div class=""></div>';return out;
 };
@@ -268,10 +320,13 @@ var out='<h1 class="page-header">Dashboard</h1><div class="table-responsive"> <d
 JST["nav-list"] = function anonymous(it) {
 var out='<ul class="nav<% _.each(extraClasses, function (klass) { %> <%= klass %><% }); %>"><% _.each(navItems, function (item) { %><li class="<% if (item.selected) { %>active<% } %>"><a href="#<%= baseURL %>/<%= item.id %>"><%= item.title %></a></li><% }); %></ul>';return out;
 };
+JST["rates"] = function anonymous(it) {
+var out='<h1 class="page-header">Rates</h1><div class="table-responsive"> <div class="col-md-12" id="chart"></div> <table class="table table-striped"> <thead> <tr> <th>Transfer Number</th> <th>Source Currency</th> <th>Destination Currency</th> <th>Rate</th> <th>Date</th> </tr> </thead> <tbody> <% _.each(transfers, function(transfer) { %> <tr> <td><%= transfer.pk %></td> <td><%= transfer.fields.input_currency %></td> <td><%= transfer.fields.output_currency %></td> <td><%= transfer.fields.exchange_rate %></td> <td><%= transfer.timeFormatted %></td> </tr> <% }); %> </tbody> </table></div>';return out;
+};
 JST["settings"] = function anonymous(it) {
 var out='';return out;
 };module.exports = JST;
-},{}],9:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 "use strict";
 
 var $ = require('jquery');
@@ -328,7 +383,7 @@ module.exports = Backbone.View.extend({
         this.showView('#top-nav', NavView);
     }
 });
-},{"../collections/navigation-items":1,"../templates":8,"./base-nav":10,"backbone":13,"jquery":14,"underscore":16}],10:[function(require,module,exports){
+},{"../collections/navigation-items":1,"../templates":10,"./base-nav":12,"backbone":16,"jquery":17,"underscore":19}],12:[function(require,module,exports){
 "use strict";
 
 var $ = require('jquery');
@@ -402,7 +457,7 @@ module.exports = Backbone.View.extend({
         }));
     }
 });
-},{"../templates":8,"backbone":13,"jquery":14,"underscore":16}],11:[function(require,module,exports){
+},{"../templates":10,"backbone":16,"jquery":17,"underscore":19}],13:[function(require,module,exports){
 "use strict";
 
 var $ = require('jquery');
@@ -424,7 +479,7 @@ module.exports = Backbone.View.extend({
     currentViews: {},
     navItems: [
         {
-            id: 'overview',
+            id: 'dashboard',
             title: 'Overview'
         },
         {
@@ -470,7 +525,7 @@ module.exports = Backbone.View.extend({
                 _ : _,
                 transfers: _this.collection.for_template()
             }));
-
+/*
             _this.$('#chart').highcharts({
                 chart: {
                     type: 'area'
@@ -530,10 +585,82 @@ module.exports = Backbone.View.extend({
                     data: [2, 2, 2, 6, 13, 30, 46]
                 }]
             });
+*/
         });
     }
 });
-},{"../../collections/navigation-items":1,"../../collections/transfers":2,"../../templates":8,"../base-nav":10,"backbone":13,"jquery":14,"underscore":16}],12:[function(require,module,exports){
+},{"../../collections/navigation-items":1,"../../collections/transfers":3,"../../templates":10,"../base-nav":12,"backbone":16,"jquery":17,"underscore":19}],14:[function(require,module,exports){
+"use strict";
+
+var $ = require('jquery');
+var _ = require('underscore');
+var Backbone = require('backbone');
+var NavigationView = require('../base-nav');
+var NavigationItemsCollection = require('../../collections/navigation-items');
+var RatesCollection = require('../../collections/rates');
+var JST = require('../../templates');
+
+Backbone.$ = $;
+
+module.exports = Backbone.View.extend({
+
+    manage: true,
+    template: 'rates',
+
+    // Describes the navigation of the site
+    currentViews: {},
+    navItems: [
+        {
+            id: 'dashboard',
+            title: 'Overview'
+        },
+        {
+            id: 'activity',
+            title: 'Activity'
+        },
+        {
+            id: 'rates',
+            title: 'Exchange Rates'
+        },
+        {
+            id: 'transactions',
+            title: 'Export Transactions'
+        }
+    ],
+
+    initialize: function () {
+        this.navCollection = new NavigationItemsCollection(this.navItems);
+    },
+
+    showView: function (selector, view) {
+        if (this.currentViews[selector]) {
+            this.currentViews[selector].close();
+        }
+
+        this.currentViews[selector] = view;
+        $(selector).empty().append(this.currentViews[selector].el);
+        this.currentViews[selector].render();
+    },
+
+    render: function () {
+        var _this = this;
+
+        this.collection = new RatesCollection();
+        this.collection.fetch().then(function () {
+            var NavView = new NavigationView({
+                collection: _this.navCollection,
+                extraClasses: ['nav-sidebar']
+            });
+            _this.showView('#left-nav', NavView);
+
+            _this.$el.html(_.template(JST[_this.template](), {
+                _ : _,
+                transfers: _this.collection.for_template()
+            }));
+        });
+    }
+});
+},{"../../collections/navigation-items":1,"../../collections/rates":2,"../../templates":10,"../base-nav":12,"backbone":16,"jquery":17,"underscore":19}],15:[function(require,module,exports){
 "use strict";
 
 var $ = require('jquery');
@@ -589,7 +716,7 @@ module.exports = Backbone.View.extend({
         }));
     }
 });
-},{"../../collections/navigation-items":1,"../../templates":8,"../base-nav":10,"backbone":13,"jquery":14,"underscore":16}],13:[function(require,module,exports){
+},{"../../collections/navigation-items":1,"../../templates":10,"../base-nav":12,"backbone":16,"jquery":17,"underscore":19}],16:[function(require,module,exports){
 //     Backbone.js 1.0.0
 
 //     (c) 2010-2013 Jeremy Ashkenas, DocumentCloud Inc.
@@ -2162,7 +2289,7 @@ module.exports = Backbone.View.extend({
 
 }).call(this);
 
-},{"underscore":16}],14:[function(require,module,exports){
+},{"underscore":19}],17:[function(require,module,exports){
 /*!
  * jQuery JavaScript Library v2.1.0
  * http://jquery.com/
@@ -11275,7 +11402,7 @@ return jQuery;
 
 }));
 
-},{}],15:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 //! moment.js
 //! version : 2.5.1
 //! authors : Tim Wood, Iskren Chernev, Moment.js contributors
@@ -13677,7 +13804,7 @@ return jQuery;
     }
 }).call(this);
 
-},{}],16:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 //     Underscore.js 1.5.2
 //     http://underscorejs.org
 //     (c) 2009-2013 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
@@ -14955,4 +15082,4 @@ return jQuery;
 
 }).call(this);
 
-},{}]},{},[4])
+},{}]},{},[5])

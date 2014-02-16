@@ -1,0 +1,26 @@
+<h1 class="page-header">Rates</h1>
+<div class="table-responsive">
+  <div class="col-md-12" id="chart"></div>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Transfer Number</th>
+        <th>Source Currency</th>
+        <th>Destination Currency</th>
+        <th>Rate</th>
+        <th>Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% _.each(transfers, function(transfer) { %>
+      <tr>
+        <td><%= transfer.pk %></td>
+        <td><%= transfer.fields.input_currency %></td>
+        <td><%= transfer.fields.output_currency %></td>
+        <td><%= transfer.fields.exchange_rate %></td>
+        <td><%= transfer.timeFormatted %></td>
+      </tr>
+      <% }); %>
+    </tbody>
+  </table>
+</div>

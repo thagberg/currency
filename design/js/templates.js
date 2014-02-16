@@ -7,6 +7,9 @@ var out='<h1 class="page-header">Dashboard</h1><div class="table-responsive"> <d
 JST["nav-list"] = function anonymous(it) {
 var out='<ul class="nav<% _.each(extraClasses, function (klass) { %> <%= klass %><% }); %>"><% _.each(navItems, function (item) { %><li class="<% if (item.selected) { %>active<% } %>"><a href="#<%= baseURL %>/<%= item.id %>"><%= item.title %></a></li><% }); %></ul>';return out;
 };
+JST["rates"] = function anonymous(it) {
+var out='<h1 class="page-header">Rates</h1><div class="table-responsive"> <div class="col-md-12" id="chart"></div> <table class="table table-striped"> <thead> <tr> <th>Transfer Number</th> <th>Source Currency</th> <th>Destination Currency</th> <th>Rate</th> <th>Date</th> </tr> </thead> <tbody> <% _.each(transfers, function(transfer) { %> <tr> <td><%= transfer.pk %></td> <td><%= transfer.fields.input_currency %></td> <td><%= transfer.fields.output_currency %></td> <td><%= transfer.fields.exchange_rate %></td> <td><%= transfer.timeFormatted %></td> </tr> <% }); %> </tbody> </table></div>';return out;
+};
 JST["settings"] = function anonymous(it) {
 var out='';return out;
 };module.exports = JST;
